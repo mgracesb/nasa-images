@@ -1,21 +1,28 @@
 import ImageCollectionModel from './ImageCollectionModel'
+import { getImageUrls } from '@/domain/ImageUrls/ImageUrlsApi'
 
 class ImageCollectionFactory {
   constructor() {
     this.image = {}
   }
-  
-  getImageData(image) {
+
+  async getImageData(image) {
+    const imageUrlList = await getImageUrls(image.href)
+
     this.image = new ImageCollectionModel({
       data: image.data,
-      href: image.href
+      images: imageUrlList
     })
 
     return this.image
   }
 
-  getCollection(imageCollection) {
-    const imageList = imageCollection.map((image) => this.getImageData(image))
+  async getCollection(imageCollection) {
+    const imageList = await Promise.all(
+      imageCollection.map(async (image) => {
+        return await this.getImageData(image)
+      })
+    )
 
     return imageList
   }
