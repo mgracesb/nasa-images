@@ -1,6 +1,6 @@
 <template>
-  <div class="image-list">
-    <div v-for="item in imageList" :key="item.id">
+  <div class="list">
+    <div v-for="item in imageList" :key="item.id" class="list__item">
       <ListItem
         :title="item.data.title"
         :thumbnail="item.images"
@@ -16,7 +16,7 @@ import { defineComponent, onMounted } from 'vue'
 import ListItem from '@/components/molecules/list-item/list-item.vue'
 
 export default defineComponent({
-  components: { ListItem },
+  components: { ListItem,  },
   props: {
     imageList: Array
   },

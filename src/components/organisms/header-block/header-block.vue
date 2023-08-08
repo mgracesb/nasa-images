@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <img class="header__logo" src="@/assets/logo.svg" />
-    <h1>Discover Historic NASA Mission Imagery</h1>
+    <h1 class="header__text">Discover Historic NASA Mission Imagery</h1>
   </header>
 </template>
 

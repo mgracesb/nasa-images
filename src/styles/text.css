@@ -6,6 +6,13 @@
   font-size: 0.85rem;
 }
 
+.text__medium--bold {
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1rem;
+  color: #9BDAF1
+}
+
 .text__large {
   font-size: 1.15rem;
 }

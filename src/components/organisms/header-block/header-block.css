@@ -8,3 +8,7 @@
 .header__logo {
   width: 10rem;
 }
+
+.header__text {
+  text-align: center;
+}

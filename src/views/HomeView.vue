@@ -3,7 +3,10 @@
     <AnimatedBg>
       <HeaderBlock />
       <SearchBar v-model="inputText" @search="search" @clear="clear" />
-      <ImageList v-if="imageCollection.length" :image-list="imageCollection" />
+      <div v-if="isLoading" class="home__spinner">
+        <Spinner />
+      </div>
+      <ImageList v-if="imageCollection.length && !isLoading" :image-list="imageCollection" />
     </AnimatedBg>
   </main>
 </template>
@@ -15,9 +18,10 @@ import SearchBar from '@/components/molecules/search-bar/search-bar.vue'
 import ImageList from '@/components/molecules/image-list/image-list.vue'
 import AnimatedBg from '@/components/molecules/animated-bg/animated-bg.vue'
 import HeaderBlock from '@/components/organisms/header-block/header-block.vue'
+import Spinner from '@/components/atoms/loading-spinner/loading-spinner.vue'
 
 export default defineComponent({
-  components: { SearchBar, ImageList, AnimatedBg, HeaderBlock },
+  components: { SearchBar, ImageList, AnimatedBg, HeaderBlock, Spinner },
   data() {
     return {
       inputText: ''
@@ -29,6 +33,7 @@ export default defineComponent({
     const currentPage = ref(INITIAL_PAGE)
     const searchData = ref({})
     const searchValue = ref('')
+    const isLoading = ref(false)
 
     onMounted(() => {
       const storedPage = localStorage.getItem('currentPage')
@@ -38,18 +43,24 @@ export default defineComponent({
     })
 
     const search = async (query: string) => {
+      if (query === '') {
+        clear()
+        return
+      }
+
       const data = {
         query: query,
         page: INITIAL_PAGE
       }
+      isLoading.value = true
+
       searchValue.value = query
       searchData.value = data
 
       try {
         const results = await searchImageCollection(data)
-
         imageCollection.value = results
-        console.log('HOME->', imageCollection.value)
+        isLoading.value = false
       } catch (error) {
         console.error('Error fetching images:', error)
       }
@@ -72,7 +83,7 @@ export default defineComponent({
       }
     }
 
-    return { imageCollection, searchValue, search, clear }
+    return { imageCollection, searchValue, isLoading, search, clear }
   }
 })
 </script>
@@ -83,6 +94,13 @@ export default defineComponent({
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: blue;
+}
+
+.home__spinner {
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 </style>
