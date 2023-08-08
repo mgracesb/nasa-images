@@ -1,20 +1,35 @@
 <template>
-  <div class="search-bar">
-    <input type="text" v-model="searchQuery" @input="handleInput" placeholder="Search images..." />
+  <div class="search">
+    <input
+      type="text"
+      :value="modelValue"
+      @input="handleInput"
+      placeholder="Type to start searching"
+      class="search__input"
+    />
+    <button class="search__button" @click="clearSearch">clear</button>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
-  setup(_, { emit }) {
-    const searchQuery = ref<string>('')
-
-    const handleInput = () => {
-      emit('search', searchQuery.value)
+  props: {
+    modelValue: String
+  },
+  setup(props, { emit }) {
+    const handleInput = (e: Event) => {
+      emit('search', e.target.value)
+      emit('update:modelValue', e.target.value)
     }
-    return { searchQuery, handleInput }
+
+    const clearSearch = () => {
+      emit('clear')
+      emit('update:modelValue', '')
+    }
+
+    return { handleInput, clearSearch }
   }
 })
 </script>

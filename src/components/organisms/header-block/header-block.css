@@ -1,0 +1,14 @@
+.header {
+  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header__logo {
+  width: 10rem;
+}
+
+.header__text {
+  text-align: center;
+}

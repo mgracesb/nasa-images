@@ -1,5 +1,5 @@
 <template>
-  <p>{{ description }}</p>
+  <p class="tag text__small">{{ tag }}</p>
 </template>
 
 <script lang="ts">
@@ -7,7 +7,10 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
   props: {
-    description: String
+    tag: String
   }
 })
 </script>
+<style scoped>
+@import './card-tag.css';
+</style>

@@ -1,3 +1,32 @@
-.search-bar {
-  display: flex
+.search {
+  width: 100%;
+  min-height: 2.5rem;
+  padding-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.search__input {
+  border-radius: 5px;
+  margin-right: 0.5rem;
+  width: 60%;
+  padding: 1rem;
+}
+
+.search__button {
+  padding: 0.65rem;
+  display: block;
+  background: rgba(16, 2, 211, 0.5);
+  border: 1px solid transparent;
+  color: white;
+  cursor: pointer;
+}
+
+.search__button:hover {
+  background: rgba(16, 2, 211, 0.9);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.disabled {
+  display: none;
 }
