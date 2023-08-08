@@ -3,7 +3,7 @@
     <AnimatedBg>
       <HeaderBlock />
       <SearchBar v-model="inputText" @search="search" @clear="clear" />
-      <ImageList v-if="imageCollection.length" :images="imageCollection" />
+      <ImageList v-if="imageCollection.length" :image-list="imageCollection" />
     </AnimatedBg>
   </main>
 </template>

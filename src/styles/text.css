@@ -1,0 +1,11 @@
+.text__small {
+  font-size: 0.65rem;
+}
+
+.text__medium {
+  font-size: 0.85rem;
+}
+
+.text__large {
+  font-size: 1.15rem;
+}

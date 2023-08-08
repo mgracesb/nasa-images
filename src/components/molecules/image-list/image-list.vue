@@ -1,19 +1,29 @@
 <template>
   <div class="image-list">
     <div v-for="item in imageList" :key="item.id">
-      <ListItem :image="item" />
+      <ListItem
+        :title="item.data.title"
+        :thumbnail="item.images"
+        :date="item.data.date_created"
+        :keywords="item.data.keywords"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, onMounted } from 'vue'
 import ListItem from '@/components/molecules/list-item/list-item.vue'
 
 export default defineComponent({
   components: { ListItem },
   props: {
     imageList: Array
+  },
+  setup(props) {
+    onMounted(() => {
+      console.log('MOUNTED-', props.imageList)
+    })
   }
 })
 </script>

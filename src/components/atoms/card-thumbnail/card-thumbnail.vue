@@ -1,5 +1,5 @@
 <template>
-  <p class="tag text__small">{{ tag }}</p>
+  <img :src="thumbnail" class="thumbnail"/>
 </template>
 
 <script lang="ts">
@@ -7,10 +7,10 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
   props: {
-    tag: String
+    thumbnail: String
   }
 })
 </script>
 <style scoped>
-@import './card-tag.css';
+@import './card-thumbnail.css';
 </style>
