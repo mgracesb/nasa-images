@@ -3,10 +3,14 @@
     <AnimatedBg>
       <HeaderBlock />
       <SearchBar v-model="inputText" @search="search" @clear="clear" />
-      <div v-if="isLoading" class="home__spinner">
+      <div v-show="isLoading" class="home__spinner">
         <Spinner />
       </div>
-      <ImageList v-if="imageCollection.length && !isLoading" :image-list="imageCollection" />
+      <ImageList
+        v-if="imageCollection.length"
+        :image-list="imageCollection"
+        @load-more="loadMore"
+      />
     </AnimatedBg>
   </main>
 </template>
@@ -41,7 +45,6 @@ export default defineComponent({
         currentPage.value = parseInt(storedPage)
       }
     })
-
     const search = async (query: string) => {
       if (query === '') {
         clear()
@@ -70,26 +73,34 @@ export default defineComponent({
       searchData.value = {}
       imageCollection.value = []
       searchValue.value = ''
+      currentPage.value = INITIAL_PAGE
     }
 
     const loadMore = async () => {
-      currentPage.value++
+      const data = {
+        query: searchValue.value,
+        page: currentPage.value++
+      }
+
+      isLoading.value = true
 
       try {
-        const results = await searchImageCollection(currentPage)
-        imageCollection.value = results
+        const results = await searchImageCollection(data)
+        imageCollection.value.push(...results)
+        isLoading.value = false
       } catch (error) {
         console.error('Error fetching images:', error)
       }
     }
 
-    return { imageCollection, searchValue, isLoading, search, clear }
+    return { imageCollection, searchValue, isLoading, search, clear, loadMore }
   }
 })
 </script>
 
 <style scoped>
 .home {
+  position: relative;
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -97,10 +108,16 @@ export default defineComponent({
 }
 
 .home__spinner {
-  height: 50%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  z-index: 3;
+  background-color: rgba(0, 0, 0, 0.3)
 }
 </style>
