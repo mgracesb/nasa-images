@@ -6,6 +6,12 @@
       <div v-show="isLoading" class="home__spinner">
         <Spinner />
       </div>
+      <Selector
+        v-if="uniqueYears.length"
+        v-model="selectedYear"
+        :years="uniqueYears"
+        @filter="filterByYear"
+      />
       <ImageList
         v-if="imageCollection.length"
         :image-list="imageCollection"
@@ -16,16 +22,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue'
+import { computed, defineComponent, onMounted, ref } from 'vue'
 import { searchImageCollection } from '@/domain/ImageCollection/ImageCollectionApi.js'
 import SearchBar from '@/components/molecules/search-bar/search-bar.vue'
 import ImageList from '@/components/molecules/image-list/image-list.vue'
 import AnimatedBg from '@/components/molecules/animated-bg/animated-bg.vue'
 import HeaderBlock from '@/components/organisms/header-block/header-block.vue'
 import Spinner from '@/components/atoms/loading-spinner/loading-spinner.vue'
+import Selector from '@/components/molecules/year-selector/year-selector.vue'
 
 export default defineComponent({
-  components: { SearchBar, ImageList, AnimatedBg, HeaderBlock, Spinner },
+  components: { SearchBar, ImageList, AnimatedBg, HeaderBlock, Spinner, Selector },
   data() {
     return {
       inputText: ''
@@ -34,10 +41,11 @@ export default defineComponent({
   setup() {
     const INITIAL_PAGE = 1
     const imageCollection = ref([])
-    const currentPage = ref(INITIAL_PAGE)
-    const searchData = ref({})
-    const searchValue = ref('')
-    const isLoading = ref(false)
+    const currentPage = ref<number>(INITIAL_PAGE)
+    const searchData = ref<object>({})
+    const searchValue = ref<string>('')
+    const isLoading = ref<boolean>(false)
+    const selectedYear = ref<string>('')
 
     onMounted(() => {
       const storedPage = localStorage.getItem('currentPage')
@@ -45,6 +53,31 @@ export default defineComponent({
         currentPage.value = parseInt(storedPage)
       }
     })
+
+    const uniqueYears = computed(() => {
+      const years = new Set()
+
+      imageCollection.value.forEach((item) => {
+        const year = new Date(item.data.date_created).getFullYear()
+        years.add(year)
+      })
+
+      return Array.from(years).sort((a: number, b: number) => a - b)
+    })
+
+    const filterByYear = (year: string) => {
+      selectedYear.value = year
+
+      if (selectedYear.value === '') {
+        search(searchValue.value)
+      } else {
+        imageCollection.value = imageCollection.value.filter((item) => {
+          const year = new Date(item.data.date_created).getFullYear()
+          return year === parseInt(selectedYear.value)
+        })
+      }
+    }
+
     const search = async (query: string) => {
       if (query === '') {
         clear()
@@ -77,9 +110,14 @@ export default defineComponent({
     }
 
     const loadMore = async () => {
+      if (selectedYear.value !== '') {
+        return
+      }
+
+      currentPage.value += 1
       const data = {
         query: searchValue.value,
-        page: currentPage.value++
+        page: currentPage.value
       }
 
       isLoading.value = true
@@ -93,7 +131,17 @@ export default defineComponent({
       }
     }
 
-    return { imageCollection, searchValue, isLoading, search, clear, loadMore }
+    return {
+      imageCollection,
+      searchValue,
+      isLoading,
+      selectedYear,
+      uniqueYears,
+      search,
+      clear,
+      loadMore,
+      filterByYear
+    }
   }
 })
 </script>
@@ -118,6 +166,6 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
   z-index: 3;
-  background-color: rgba(0, 0, 0, 0.3)
+  background-color: rgba(0, 0, 0, 0.3);
 }
 </style>

@@ -1,5 +1,8 @@
 <template>
-  <img :src="thumbnail" class="thumbnail"/>
+  <div class="thumbnail">
+    <a :href="thumbnail" class="thumbnail__link" target="_blank" rel="noopener noreferrer"></a>
+    <img :src="thumbnail" class="thumbnail__image" />
+  </div>
 </template>
 
 <script lang="ts">
