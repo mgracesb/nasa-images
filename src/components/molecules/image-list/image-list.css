@@ -18,13 +18,19 @@
   align-items: center;
 }
 
-@media (min-width: 700px) {
+@media (min-width: 680px) {
+  .list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 970px) {
   .list {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-@media (min-width: 1100px) {
+@media (min-width: 1300px) {
   .list {
     grid-template-columns: repeat(4, 1fr);
   }
