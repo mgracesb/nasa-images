@@ -6,14 +6,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent,computed } from 'vue'
+import { defineComponent, computed } from 'vue'
 
 export default defineComponent({
   props: {
     date: String
   },
   setup(props) {
-    const formattedDate = computed(() => {
+    const formattedDate: ComputedRef<string> = computed(() => {
       const options = { year: 'numeric', month: 'long', day: 'numeric' }
       return new Date(props.date).toLocaleDateString(undefined, options)
     })

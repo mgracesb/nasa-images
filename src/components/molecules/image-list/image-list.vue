@@ -3,7 +3,7 @@
     <div v-for="item in imageList" :key="item.id" class="list__item">
       <ListItem
         :title="item.data.title"
-        :thumbnail="item.images"
+        :thumbnail="item.href"
         :date="item.data.date_created"
         :keywords="item.data.keywords"
       />
@@ -21,9 +21,9 @@ export default defineComponent({
     imageList: Array
   },
   setup(_, { emit }) {
-    const isEndList = ref(false)
+    const isEndList = ref<boolean>(false)
 
-    const handleScroll = (e) => {
+    const handleScroll = (e): void => {
       const clientHeight = e.target.clientHeight
       const scrollHeight = e.target.scrollHeight
       const scrollTop = e.target.scrollTop
