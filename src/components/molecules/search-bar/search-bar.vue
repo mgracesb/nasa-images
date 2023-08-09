@@ -19,12 +19,12 @@ export default defineComponent({
     modelValue: String
   },
   setup(props, { emit }) {
-    const handleInput = (e: Event) => {
+    const handleInput = (e: Event): void => {
       emit('search', e.target.value)
       emit('update:modelValue', e.target.value)
     }
 
-    const clearSearch = () => {
+    const clearSearch = (): void => {
       emit('clear')
       emit('update:modelValue', '')
     }

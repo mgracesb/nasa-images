@@ -11,7 +11,7 @@ class ImageCollectionFactory {
 
     this.image = new ImageCollectionModel({
       data: image.data,
-      images: imageUrlList
+      href: imageUrlList
     })
 
     return this.image

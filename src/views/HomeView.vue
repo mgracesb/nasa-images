@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref } from 'vue'
+import { ComputedRef, computed, defineComponent, onMounted, ref } from 'vue'
 import { searchImageCollection } from '@/domain/ImageCollection/ImageCollectionApi.js'
 import SearchBar from '@/components/molecules/search-bar/search-bar.vue'
 import ImageList from '@/components/molecules/image-list/image-list.vue'
@@ -30,6 +30,7 @@ import AnimatedBg from '@/components/molecules/animated-bg/animated-bg.vue'
 import HeaderBlock from '@/components/organisms/header-block/header-block.vue'
 import Spinner from '@/components/atoms/loading-spinner/loading-spinner.vue'
 import Selector from '@/components/molecules/year-selector/year-selector.vue'
+import { ImageType, ImageDataQueryType } from '@/store/types/Image'
 
 export default defineComponent({
   components: { SearchBar, ImageList, AnimatedBg, HeaderBlock, Spinner, Selector },
@@ -40,7 +41,7 @@ export default defineComponent({
   },
   setup() {
     const INITIAL_PAGE = 1
-    const imageCollection = ref([])
+    const imageCollection = ref<ImageType[]>([])
     const currentPage = ref<number>(INITIAL_PAGE)
     const searchData = ref<object>({})
     const searchValue = ref<string>('')
@@ -54,8 +55,8 @@ export default defineComponent({
       }
     })
 
-    const uniqueYears = computed(() => {
-      const years = new Set()
+    const uniqueYears: ComputedRef<number[]> = computed(() => {
+      const years = new Set<number>()
 
       imageCollection.value.forEach((item) => {
         const year = new Date(item.data.date_created).getFullYear()
@@ -65,7 +66,7 @@ export default defineComponent({
       return Array.from(years).sort((a: number, b: number) => a - b)
     })
 
-    const filterByYear = (year: string) => {
+    const filterByYear = (year: string): void | boolean => {
       selectedYear.value = year
 
       if (selectedYear.value === '') {
@@ -78,16 +79,17 @@ export default defineComponent({
       }
     }
 
-    const search = async (query: string) => {
+    const search = async (query: string): Promise<void> => {
       if (query === '') {
         clear()
         return
       }
 
-      const data = {
+      const data: ImageDataQueryType = {
         query: query,
         page: INITIAL_PAGE
       }
+
       isLoading.value = true
 
       searchValue.value = query
@@ -102,14 +104,14 @@ export default defineComponent({
       }
     }
 
-    const clear = () => {
+    const clear = (): void => {
       searchData.value = {}
       imageCollection.value = []
       searchValue.value = ''
       currentPage.value = INITIAL_PAGE
     }
 
-    const loadMore = async () => {
+    const loadMore = async (): Promise<void> => {
       if (selectedYear.value !== '') {
         return
       }
@@ -169,3 +171,4 @@ export default defineComponent({
   background-color: rgba(0, 0, 0, 0.3);
 }
 </style>
+@/store/types/Image

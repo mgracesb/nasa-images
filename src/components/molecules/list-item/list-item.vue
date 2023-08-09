@@ -39,9 +39,9 @@ export default defineComponent({
     thumbnail: String
   },
   setup() {
-    const isFlipped = ref(false)
+    const isFlipped = ref<boolean>(false)
 
-    const flipCard = () => {
+    const flipCard = (): void => {
       isFlipped.value = !isFlipped.value
     }
     return {

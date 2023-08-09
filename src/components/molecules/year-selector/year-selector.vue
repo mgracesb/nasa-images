@@ -20,7 +20,7 @@ export default defineComponent({
     years: Array
   },
   setup(props, { emit }) {
-    const filterByYear = (e: Event) => {
+    const filterByYear = (e: Event): void => {
       emit('filter', e.target.value)
       emit('update:modelValue', e.target.value)
     }
