@@ -41,6 +41,8 @@ export default defineComponent({
   },
   setup() {
     const INITIAL_PAGE = 1
+    const initialImageCollection = ref<ImageType[]>([])
+
     const imageCollection = ref<ImageType[]>([])
     const currentPage = ref<number>(INITIAL_PAGE)
     const searchData = ref<object>({})
@@ -58,6 +60,14 @@ export default defineComponent({
     const uniqueYears: ComputedRef<number[]> = computed(() => {
       const years = new Set<number>()
 
+      if (selectedYear.value !== '') {
+        initialImageCollection.value.forEach((item) => {
+          const year = new Date(item.data.date_created).getFullYear()
+          years.add(year)
+        })
+        return Array.from(years).sort((a: number, b: number) => a - b)
+      }
+
       imageCollection.value.forEach((item) => {
         const year = new Date(item.data.date_created).getFullYear()
         years.add(year)
@@ -72,10 +82,12 @@ export default defineComponent({
       if (selectedYear.value === '') {
         search(searchValue.value)
       } else {
-        imageCollection.value = imageCollection.value.filter((item) => {
-          const year = new Date(item.data.date_created).getFullYear()
-          return year === parseInt(selectedYear.value)
-        })
+        imageCollection.value = [
+          ...initialImageCollection.value.filter((item) => {
+            const year = new Date(item.data.date_created).getFullYear()
+            return year === parseInt(selectedYear.value)
+          })
+        ]
       }
     }
 
@@ -97,7 +109,13 @@ export default defineComponent({
 
       try {
         const results = await searchImageCollection(data)
-        imageCollection.value = results
+        if (selectedYear.value !== '') {
+          imageCollection.value = results
+          isLoading.value = false
+          return
+        }
+        initialImageCollection.value = results
+        imageCollection.value = initialImageCollection.value
         isLoading.value = false
       } catch (error) {
         console.error('Error fetching images:', error)
@@ -109,6 +127,7 @@ export default defineComponent({
       imageCollection.value = []
       searchValue.value = ''
       currentPage.value = INITIAL_PAGE
+      selectedYear.value = ''
     }
 
     const loadMore = async (): Promise<void> => {
