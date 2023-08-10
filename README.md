@@ -1,27 +1,30 @@
-# nasa-images
+<p align="center">
+    <img src="/public/logo.svg" alt="Alt text" title="CosmicSnap logo">
+</p>
 
-This template should help get you started developing with Vue 3 in Vite.
 
-## Recommended IDE Setup
+<h1><p align="center"> 🪐 CosmicSnap ✨ </p></h1>
+<p align="center">
+    CosmicSnap is an interactive web app powered by the <a href="https://images-api.nasa.gov/search">NASA images API</a>.
+<br>
+It loads 25 results initially and more as you scroll, every item retreived 
+<br>
+will display its title, creation date, keywords, and image thumbnail.
+<br>
+It can filter by year and whenever a thumbnail is clicked it will take you to the original source.
+</p>
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+<br>
+<br>
 
-## Type Support for `.vue` Imports in TS
+## Here's a sneak peek of the app
+<p align="center">
+    <img src="/public/mockup.png" alt="Alt text" title="Web App Mockup">
+</p>
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+## Follow the steps bellow and check it out!
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
-
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
+### Project setup
 
 ```sh
 npm install
